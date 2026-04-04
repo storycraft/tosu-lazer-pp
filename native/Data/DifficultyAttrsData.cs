@@ -24,9 +24,6 @@ public readonly struct DifficultyAttrsData
     public double AimTopWeightedSliderFactor { get; init; }
     public double AimDifficultStrainCount { get; init; }
     public double SpeedDifficultStrainCount { get; init; }
-    public int NCircles { get; init; }
-    public int NSliders { get; init; }
-    public int NSpinners { get; init; }
     #endregion
 
     #region osu!taiko
@@ -54,10 +51,6 @@ public readonly struct DifficultyAttrsData
         AimTopWeightedSliderFactor = attrs.AimTopWeightedSliderFactor,
         AimDifficultStrainCount = attrs.AimDifficultStrainCount,
         SpeedDifficultStrainCount = attrs.SpeedDifficultStrainCount,
-
-        NCircles = attrs.HitCircleCount,
-        NSliders = attrs.SliderCount,
-        NSpinners = attrs.SpinnerCount,
     };
 
     private static DifficultyAttrsData FromMod(TaikoDifficultyAttributes attrs) => new()
