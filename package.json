@@ -3,7 +3,13 @@
   "version": "0.1.0",
   "description": "PP calculator for tosu",
   "author": "storycraft <storycraft@pancake.sh>",
+  "private": true,
   "main": "dist/index",
+  "files": [
+    "dist/**/*",
+    "native/dist/binding.node",
+    "native/dist/binding.d.ts"
+  ],
   "scripts": {
     "postinstall": "pnpm run build:native",
     "build:native": "dotnet publish native --ucr",
