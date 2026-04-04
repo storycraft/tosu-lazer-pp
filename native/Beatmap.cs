@@ -20,6 +20,8 @@ public class Beatmap
     private readonly IBeatmap inner;
     private readonly Ruleset ruleset;
 
+    public int Mode => inner.BeatmapInfo.OnlineID;
+
     private Beatmap(IBeatmap inner, Ruleset ruleset)
     {
         this.inner = inner;
