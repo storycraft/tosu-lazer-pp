@@ -7,6 +7,7 @@ using Microsoft.JavaScript.NodeApi;
 using osu.Game.Beatmaps;
 using osu.Game.IO;
 using osu.Game.Rulesets;
+using osu.Game.Rulesets.Mods;
 using tosu.pp.Data;
 using tosu.pp.Internal;
 using Decoder = osu.Game.Beatmaps.Formats.Decoder;
@@ -24,31 +25,6 @@ public class Beatmap
     /// The online ID of the beatmap, also referred to as legacy gamemode ID.
     /// </summary>
     public int OnlineID => inner.BeatmapInfo.OnlineID;
-
-    /// <summary>
-    /// Total number of hit objects in the beatmap.
-    /// </summary>
-    public int HitObjects => inner.HitObjects.Count;
-
-    /// <summary>
-    /// The approach rate of the beatmap.
-    /// </summary>
-    public float Ar => inner.Difficulty.ApproachRate;
-
-    /// <summary>
-    /// The circle size of the beatmap.
-    /// </summary>
-    public float Cs => inner.Difficulty.CircleSize;
-
-    /// <summary>
-    /// The overall difficulty of the beatmap.
-    /// </summary>
-    public float Od => inner.Difficulty.OverallDifficulty;
-
-    /// <summary>
-    /// The HP drain rate of the beatmap.
-    /// </summary>
-    public float Hp => inner.Difficulty.DrainRate;
 
     private Beatmap(IBeatmap inner, Ruleset ruleset)
     {
@@ -73,6 +49,24 @@ public class Beatmap
             return null;
         }
         return new(converted, ruleset);
+    }
+
+    /// <summary>
+    /// Get beatmap difficulty with mods applied
+    /// </summary>
+    public BeatmapDifficultyData GetBeatmapDifficulty(IEnumerable<string> mods)
+    {
+        var diff = inner.BeatmapInfo.Difficulty;
+        foreach (var mod in mods)
+        {
+            var m = ruleset.CreateModFromAcronym(mod);
+            if (m is IApplicableToDifficulty diffMod)
+            {
+                diffMod.ApplyToDifficulty(diff);
+            }
+        }
+
+        return BeatmapDifficultyData.FromDifficulty(diff);
     }
 
     /// <summary>
