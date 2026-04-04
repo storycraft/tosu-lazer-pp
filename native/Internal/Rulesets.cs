@@ -14,15 +14,12 @@ internal static class Rulesets
     public static readonly Ruleset catchRuleset = new CatchRuleset();
     public static readonly Ruleset maniaRuleset = new ManiaRuleset();
 
-    public static Ruleset? FromLegacyGameMode(int gameMode)
+    public static Ruleset? FromLegacyGameMode(int gameMode) => gameMode switch
     {
-        return gameMode switch
-        {
-            0 => osuRuleset,
-            1 => taikoRuleset,
-            2 => catchRuleset,
-            3 => maniaRuleset,
-            _ => throw new ArgumentException($"Invalid ruleset for game mode: {gameMode}", nameof(gameMode)),
-        };
-    }
+        0 => osuRuleset,
+        1 => taikoRuleset,
+        2 => catchRuleset,
+        3 => maniaRuleset,
+        _ => throw new ArgumentException($"Invalid ruleset for game mode: {gameMode}", nameof(gameMode)),
+    };
 }
