@@ -54,9 +54,13 @@ public class Beatmap
     /// Create gradual difficulty calculator
     /// </summary>
     /// <param name="mods">mods to apply to the difficulty calculation.</param>
-    public void CreateGradualDifficultyCalculator(IEnumerable<string> mods)
+    public GradualDifficulty CreateGradualDifficultyCalculator(IEnumerable<string> mods)
     {
-        var diff = ruleset.CreateDifficultyCalculator(new DiffWorkingBeatmap(inner));
+        return new GradualDifficulty(
+            ruleset.CreateDifficultyCalculator(new DiffWorkingBeatmap(inner)).CreateGradualDifficulty(
+                mods.Select(ruleset.CreateModFromAcronym).Where(mod => mod is not null)
+            )
+        );
     }
 
     /// <summary>
