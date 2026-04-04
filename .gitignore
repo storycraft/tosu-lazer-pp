@@ -1,0 +1,6 @@
+/node_modules
+/native/dist
+/native/bin
+/native/obj
+/vendor
+/dist

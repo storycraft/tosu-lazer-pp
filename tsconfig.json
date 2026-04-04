@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "ES2023"
+    ],
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "rootDir": "./src",
+    "outDir": "dist",
+    "allowJs": true,
+    "esModuleInterop": true,
+    "noCheck": true,
+    "strict": true,
+    "noImplicitAny": false,
+    "target": "ES2020"
+  },
+  "include": [
+    "src"
+  ]
+}

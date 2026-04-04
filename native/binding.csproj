@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <Nullable>enable</Nullable>
+    <PublishDir>dist</PublishDir>
+    <PublishAot>true</PublishAot>
+    <PublishNodeModule>true</PublishNodeModule>
+    <IlcGenerateMstatFile>true</IlcGenerateMstatFile>
+    <IlcGenerateDgmlFile>true</IlcGenerateDgmlFile>
+    <!-- Trim settings -->
+    <PublishTrimmed>true</PublishTrimmed>
+    <TrimMode>full</TrimMode>
+    <MetricsSupport>false</MetricsSupport>
+    <MetadataUpdaterSupport>false</MetadataUpdaterSupport>
+    <XmlResolverIsNetworkingEnabledByDefault>false</XmlResolverIsNetworkingEnabledByDefault>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="ILLink.Descriptors.xml">
+      <LogicalName>ILLink.Descriptors.xml</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.JavaScript.NodeApi" Version="0.9.19" />
+    <PackageReference Include="Microsoft.JavaScript.NodeApi.Generator" Version="0.9.19" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../vendor/osu.Game/osu.Game.csproj" />
+    <ProjectReference Include="../vendor/osu.Game.Rulesets.Catch/osu.Game.Rulesets.Catch.csproj" />
+    <ProjectReference Include="../vendor/osu.Game.Rulesets.Mania/osu.Game.Rulesets.Mania.csproj" />
+    <ProjectReference Include="../vendor/osu.Game.Rulesets.Osu/osu.Game.Rulesets.Osu.csproj" />
+    <ProjectReference Include="../vendor/osu.Game.Rulesets.Taiko/osu.Game.Rulesets.Taiko.csproj" />
+  </ItemGroup>
+
+  <!-- Exclude game resources -->
+  <ItemGroup>
+    <PackageReference Include="ppy.osu.Game.Resources" Version="*" PrivateAssets="all" />
+  </ItemGroup>
+
+</Project>
