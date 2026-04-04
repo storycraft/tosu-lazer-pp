@@ -51,9 +51,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build natives
-        run: pnpm run build:native
-
       - name: Build
         run: pnpm run build
 
