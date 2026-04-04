@@ -1,5 +1,3 @@
-
-using System;
 using Microsoft.JavaScript.NodeApi;
 using osu.Game.Rulesets.Difficulty;
 
