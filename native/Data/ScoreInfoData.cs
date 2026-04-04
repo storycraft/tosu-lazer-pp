@@ -14,7 +14,7 @@ public readonly struct ScoreInfoData
     public required long TotalScore { get; init; }
 
     public required double Accuracy { get; init; }
-    public required IEnumerable<string> Mods { get; init; }
+    public required string[] Mods { get; init; }
 
     public required int MaxCombo { get; init; }
 
