@@ -8,7 +8,6 @@ using osu.Game.Beatmaps;
 using osu.Game.IO;
 using osu.Game.Rulesets;
 using osu.Game.Rulesets.Mods;
-using osu.Game.Scoring;
 using tosu.pp.Data;
 using tosu.pp.Internal;
 using Decoder = osu.Game.Beatmaps.Formats.Decoder;
@@ -113,20 +112,6 @@ public class Beatmap
                 attrs.Inner
             )
         );
-    }
-
-    /// <summary>
-    /// Create the maximum possible score for the beatmap with the given mods, and return the resulting score info.
-    /// </summary>
-    public ScoreInfoData CreateMaxScore(IEnumerable<string> mods)
-    {
-        var scoreProcessor = ruleset.CreateScoreProcessor();
-        scoreProcessor.Mods.Value = mods.Select(ruleset.CreateModFromAcronym).Where(mod => mod is not null).ToArray()!;
-        scoreProcessor.ApplyBeatmap(inner);
-
-        var info = new ScoreInfo(inner.BeatmapInfo);
-        scoreProcessor.PopulateScore(info);
-        return ScoreInfoData.FromScoreInfo(info);
     }
 
     /// <summary>
