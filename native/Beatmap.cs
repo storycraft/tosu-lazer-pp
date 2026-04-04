@@ -30,6 +30,26 @@ public class Beatmap
     /// </summary>
     public int HitObjects => inner.HitObjects.Count;
 
+    /// <summary>
+    /// The approach rate of the beatmap.
+    /// </summary>
+    public float Ar => inner.Difficulty.ApproachRate;
+
+    /// <summary>
+    /// The circle size of the beatmap.
+    /// </summary>
+    public float Cs => inner.Difficulty.CircleSize;
+
+    /// <summary>
+    /// The overall difficulty of the beatmap.
+    /// </summary>
+    public float Od => inner.Difficulty.OverallDifficulty;
+
+    /// <summary>
+    /// The HP drain rate of the beatmap.
+    /// </summary>
+    public float Hp => inner.Difficulty.DrainRate;
+
     private Beatmap(IBeatmap inner, Ruleset ruleset)
     {
         this.inner = inner;
