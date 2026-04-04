@@ -1,0 +1,72 @@
+name: deploy
+
+on:
+  workflow_call:
+  workflow_dispatch:
+    inputs:
+      osu:
+        description: Github repo to osu!
+        required: true
+        default: ppy/osu
+      ref:
+        description: Branch or tag to fetch osu!
+        required: true
+        default: master
+
+concurrency:
+  group: deploy-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    strategy:
+      matrix:
+        version: [10, 12, 14]
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v6
+    
+      - name: Fetch osu
+        uses: actions/checkout@v6
+        with:
+          repository: ${{ inputs.osu }}
+          ref: ${{ inputs.ref }}
+          path: ./vendor
+
+      - name: Apply patches
+        working-directory: vendor
+        run: git apply ../patches/gradual-pp-calc.patch
+
+      - name: Extract Commit SHA
+        id: commit-sha
+        run: |
+          "short_sha=" + "${{ github.sha }}".SubString(0, 8) >> $env:GITHUB_OUTPUT
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build natives
+        run: pnpm run build:native
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Pack package
+        run: pnpm pack --out tosu-lazer-pp.tgz
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'tosu-lazer-pp-${{ steps.commit-sha.outputs.short_sha }}-${{ matrix.os }}'
+          path: tosu-lazer-pp.tgz
