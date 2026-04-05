@@ -12,7 +12,6 @@ using osu.Game.Rulesets.Osu.Objects;
 using osu.Game.Rulesets.Scoring;
 using osu.Game.Scoring;
 using tosu.pp.Data;
-using tosu.pp.Internal;
 
 namespace tosu.pp;
 
