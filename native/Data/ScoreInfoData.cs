@@ -64,4 +64,31 @@ public readonly struct ScoreInfoData
         Accuracy = Accuracy,
         Statistics = CreateStatistics(),
     };
+
+    internal static ScoreInfoData FromScoreInfo(ScoreInfo info)
+    {
+        return new ScoreInfoData
+        {
+            TotalScore = info.TotalScore,
+            Accuracy = info.Accuracy,
+            Mods = [.. info.Mods.Select(mod => mod.Acronym)],
+            MaxCombo = info.MaxCombo,
+            SliderEndHits = info.Statistics.GetValueOrDefault(HitResult.SliderTailHit),
+            ComboBreaks = info.Statistics.GetValueOrDefault(HitResult.ComboBreak),
+            IgnoreHits = info.Statistics.GetValueOrDefault(HitResult.IgnoreHit),
+            IgnoreMisses = info.Statistics.GetValueOrDefault(HitResult.IgnoreMiss),
+            LargeBonuses = info.Statistics.GetValueOrDefault(HitResult.LargeBonus),
+            SmallBonuses = info.Statistics.GetValueOrDefault(HitResult.SmallBonus),
+            LargeTickHits = info.Statistics.GetValueOrDefault(HitResult.LargeTickHit),
+            LargeTickMisses = info.Statistics.GetValueOrDefault(HitResult.LargeTickMiss),
+            SmallTickHits = info.Statistics.GetValueOrDefault(HitResult.SmallTickHit),
+            SmallTickMisses = info.Statistics.GetValueOrDefault(HitResult.SmallTickMiss),
+            Perfects = info.Statistics.GetValueOrDefault(HitResult.Perfect),
+            Greats = info.Statistics.GetValueOrDefault(HitResult.Great),
+            Goods = info.Statistics.GetValueOrDefault(HitResult.Good),
+            Oks = info.Statistics.GetValueOrDefault(HitResult.Ok),
+            Mehs = info.Statistics.GetValueOrDefault(HitResult.Meh),
+            Misses = info.Statistics.GetValueOrDefault(HitResult.Miss),
+        };
+    }
 }
