@@ -124,11 +124,7 @@ public class Beatmap
         using var reader = new LineBufferedReader(new MemoryStream(bytes));
         var beatmap = Decoder.GetDecoder<OsuBeatmap>(reader).Decode(reader);
         var rulesetId = beatmap.BeatmapInfo.Ruleset.OnlineID;
-        var ruleset = Rulesets.FromLegacyGameMode(rulesetId);
-        if (ruleset is null)
-        {
-            throw new InvalidOperationException("Invalid ruleset: " + rulesetId);
-        }
+        var ruleset = Rulesets.FromLegacyGameMode(rulesetId) ?? throw new InvalidOperationException("Invalid ruleset: " + rulesetId);
 
         return new(beatmap, ruleset);
     }
