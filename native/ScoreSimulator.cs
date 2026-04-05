@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.JavaScript.NodeApi;
 using osu.Game.Beatmaps;
+using osu.Game.Rulesets;
 using osu.Game.Rulesets.Catch.Objects;
 using osu.Game.Rulesets.Mania.Objects;
 using osu.Game.Rulesets.Mods;
@@ -21,16 +22,16 @@ public static class ScoreSimulator
 
     /// <summary>
     /// Create a score closest to given accuracy with the current beatmap and mods, but only with the first `count` hitobjects.
-    /// Generated score only have hit results and accuracy.
+    /// Generated score only have hit results, accuracy and mod.
     /// </summary>
     /// <param name="count"></param>
     public static ScoreInfoData CreatePartialScore(Beatmap beatmap, int count, string[] mods, double accuracy) => ScoreInfoData.FromScoreInfo(
         CreateScoreInfo(
+            beatmap.ruleset,
             new osu.Game.Beatmaps.Beatmap()
             {
                 HitObjects = [.. beatmap.inner.HitObjects.Take(count)]
             },
-            beatmap.Mode,
             mods,
             accuracy
         )
@@ -38,22 +39,24 @@ public static class ScoreSimulator
 
     /// <summary>
     /// Create a score closest to given accuracy with the current beatmap and mods.
-    /// Generated score only have hit results and accuracy.
+    /// Generated score only have hit results, accuracy and mod.
     /// </summary>
     public static ScoreInfoData CreateScore(Beatmap beatmap, string[] mods, double accuracy) =>
-        ScoreInfoData.FromScoreInfo(CreateScoreInfo(beatmap.inner, beatmap.Mode, mods, accuracy));
+        ScoreInfoData.FromScoreInfo(CreateScoreInfo(beatmap.ruleset, beatmap.inner, mods, accuracy));
 
 
-    private static ScoreInfo CreateScoreInfo(IBeatmap beatmap, int ruleset, string[] mods, double accuracy)
+    private static ScoreInfo CreateScoreInfo(Ruleset ruleset, IBeatmap beatmap, string[] mods, double accuracy)
     {
-        Dictionary<HitResult, int> statistics = ruleset switch
+        Mod[] modsArray = mods.Select(m => ruleset.CreateModFromAcronym(m)).Where(m => m is not null).ToArray()!;
+
+        Dictionary<HitResult, int> statistics = ruleset.RulesetInfo.OnlineID switch
         {
             0 => generateOsuHitResults(beatmap, accuracy, 0, null, null, 0, 0),
             1 => generateTaikoHitResults(accuracy, beatmap, 0, null),
             2 => generateCatchHitResults(beatmap, accuracy, 0, null, null),
             3 => generateManiaHitResults(
                 beatmap,
-                mods.Select(Rulesets.maniaRuleset.CreateModFromAcronym).Where(m => m is not null).ToArray()!,
+                modsArray,
                 accuracy,
                 0,
                 null,
@@ -67,6 +70,7 @@ public static class ScoreSimulator
         return new ScoreInfo(beatmap.BeatmapInfo, beatmap.BeatmapInfo.Ruleset)
         {
             Accuracy = accuracy,
+            Mods = modsArray,
             Statistics = statistics
         };
     }
