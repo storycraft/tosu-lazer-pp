@@ -39,10 +39,6 @@ jobs:
           git config --global user.name 'Tosu Lazer pp calc CD'
           git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
-      - name: Apply patches
-        working-directory: vendor
-        run: git am -C0 -3 ../patches/0001-Gradual-diff-calculator.patch
-
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
 
@@ -55,6 +51,9 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
+
+      - name: Apply patches
+        run: pnpm run apply-patch
 
       - name: Build
         run: pnpm run build
