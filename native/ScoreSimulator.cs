@@ -29,6 +29,7 @@ public static class ScoreSimulator
             {
                 HitObjects = [.. beatmap.inner.HitObjects.Take(count)]
             },
+            beatmap.Mode,
             mods,
             accuracy
         )
@@ -38,12 +39,12 @@ public static class ScoreSimulator
     /// Create a score closest to given accuracy with the current beatmap and mods.
     /// </summary>
     public static ScoreInfoData CreateScore(Beatmap beatmap, string[] mods, double accuracy) =>
-        ScoreInfoData.FromScoreInfo(CreateScoreInfo(beatmap.inner, mods, accuracy));
+        ScoreInfoData.FromScoreInfo(CreateScoreInfo(beatmap.inner, beatmap.Mode, mods, accuracy));
 
 
-    private static ScoreInfo CreateScoreInfo(IBeatmap beatmap, string[] mods, double accuracy)
+    private static ScoreInfo CreateScoreInfo(IBeatmap beatmap, int ruleset, string[] mods, double accuracy)
     {
-        Dictionary<HitResult, int> statistics = beatmap.BeatmapInfo.Ruleset.OnlineID switch
+        Dictionary<HitResult, int> statistics = ruleset switch
         {
             0 => generateOsuHitResults(beatmap, accuracy, 0, null, null, null, null),
             1 => generateTaikoHitResults(accuracy, beatmap, 0, null),
