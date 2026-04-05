@@ -43,12 +43,13 @@ public class Beatmap
             return null;
         }
 
-        var converted = ruleset.CreateBeatmapConverter(inner).Convert();
-        if (converted is null)
+        var converter = ruleset.CreateBeatmapConverter(inner);
+        if (!converter.CanConvert())
         {
             return null;
         }
-        return new(converted, ruleset);
+
+        return new(converter.Convert(), ruleset);
     }
 
     /// <summary>
