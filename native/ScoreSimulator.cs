@@ -48,7 +48,7 @@ public static class ScoreSimulator
     {
         Dictionary<HitResult, int> statistics = ruleset switch
         {
-            0 => generateOsuHitResults(beatmap, accuracy, 0, null, null, null, null),
+            0 => generateOsuHitResults(beatmap, accuracy, 0, null, null, 0, 0),
             1 => generateTaikoHitResults(accuracy, beatmap, 0, null),
             2 => generateCatchHitResults(beatmap, accuracy, 0, null, null),
             3 => generateManiaHitResults(
