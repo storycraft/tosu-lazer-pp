@@ -44,7 +44,6 @@ public static class ScoreSimulator
     public static ScoreInfoData CreateScore(Beatmap beatmap, string[] mods, double accuracy) =>
         ScoreInfoData.FromScoreInfo(CreateScoreInfo(beatmap.ruleset, beatmap.inner, mods, accuracy));
 
-
     private static ScoreInfo CreateScoreInfo(Ruleset ruleset, IBeatmap beatmap, string[] mods, double accuracy)
     {
         Mod[] modsArray = mods.Select(m => ruleset.CreateModFromAcronym(m)).Where(m => m is not null).ToArray()!;
