@@ -7,13 +7,14 @@ settings:
 importers:
 
   .:
+    dependencies:
+      typescript:
+        specifier: ^6.0.2
+        version: 6.0.2
     devDependencies:
       node-api-dotnet:
         specifier: ^0.9.19
         version: 0.9.19
-      typescript:
-        specifier: ^6.0.2
-        version: 6.0.2
 
 packages:
 
