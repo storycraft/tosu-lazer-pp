@@ -34,11 +34,6 @@ jobs:
           ref: ${{ inputs.ref }}
           path: ./vendor
 
-      - name: Setup cd
-        run: |
-          git config --global user.name 'Tosu Lazer pp calc CD'
-          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
-
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
 
@@ -53,10 +48,10 @@ jobs:
         run: pnpm install
 
       - name: Apply patches
-        run: pnpm run apply-patch
+        run: pnpm run ci:apply-patch
 
       - name: Build
-        run: pnpm run build
+        run: pnpm run ci:build
 
       - name: Pack package
         run: pnpm pack --out tosu-lazer-pp.tgz
