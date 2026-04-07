@@ -11,9 +11,9 @@
     "setup-dev": "npm run clone-default-osu && npm run apply-patch",
     "clone-default-osu": "git clone --branch master https://github.com/ppy/osu vendor",
     "clone-default-osu:prod": "git clone --depth 1 --branch master https://github.com/ppy/osu vendor",
-    "create-patch": "cd vendor && git format-patch -m origin/master..HEAD --stdout > ../patches/0001-Gradual-diff-calculator.patch",
-    "apply-patch": "cd vendor && git am -3 ../patches/0001-Gradual-diff-calculator.patch",
-    "apply-patch:prod": "cd vendor && git apply -C0 -3 ../patches/0001-Gradual-diff-calculator.patch",
+    "create-patch": "git -C vendor format-patch -m origin/master..HEAD --stdout > ./patches/0001-Gradual-diff-calculator.patch",
+    "apply-patch": "git -C vendor am -3 ./patches/0001-Gradual-diff-calculator.patch",
+    "apply-patch:prod": "git -C vendor apply -C0 -3 ./patches/0001-Gradual-diff-calculator.patch",
     "build": "dotnet publish native --ucr"
   },
   "devDependencies": {
