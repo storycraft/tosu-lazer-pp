@@ -29,13 +29,6 @@ jobs:
     environment: deploy
     steps:
       - uses: actions/checkout@v6
-    
-      - name: Fetch osu
-        uses: actions/checkout@v6
-        with:
-          repository: ${{ inputs.osu }}
-          ref: ${{ inputs.ref }}
-          path: ./lib/vendor
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -49,6 +42,13 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --ignore-scripts
+    
+      - name: Fetch osu
+        uses: actions/checkout@v6
+        with:
+          repository: ${{ inputs.osu }}
+          ref: ${{ inputs.ref }}
+          path: ./lib/vendor
 
       - name: Apply patches
         run: pnpm run apply-patch:prod
