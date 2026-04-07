@@ -2,4 +2,4 @@ node_modules
 /lib/native/dist
 /lib/native/bin
 /lib/native/obj
-/vendor
+/lib/vendor
