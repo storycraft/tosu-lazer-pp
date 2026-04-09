@@ -8,12 +8,12 @@ using osu.Game.Beatmaps;
 using osu.Game.IO;
 using osu.Game.Rulesets;
 using osu.Game.Rulesets.Mods;
-using tosu.pp.Data;
-using tosu.pp.Internal;
+using binding.Data;
+using binding.Internal;
 using Decoder = osu.Game.Beatmaps.Formats.Decoder;
 using OsuBeatmap = osu.Game.Beatmaps.Beatmap;
 
-namespace tosu.pp;
+namespace binding;
 
 [JSExport]
 public class Beatmap

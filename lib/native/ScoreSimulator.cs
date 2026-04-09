@@ -11,9 +11,9 @@ using osu.Game.Rulesets.Mods;
 using osu.Game.Rulesets.Osu.Objects;
 using osu.Game.Rulesets.Scoring;
 using osu.Game.Scoring;
-using tosu.pp.Data;
+using binding.Data;
 
-namespace tosu.pp;
+namespace binding;
 
 /// <summary>
 /// Provides methods to simulate maximum score with specific accuracy and mods for a given beatmap.

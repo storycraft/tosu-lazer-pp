@@ -3,7 +3,7 @@ using osu.Game.Rulesets.Difficulty;
 using osu.Game.Rulesets.Osu.Difficulty;
 using osu.Game.Rulesets.Taiko.Difficulty;
 
-namespace tosu.pp.Data;
+namespace binding.Data;
 
 [JSExport]
 public readonly struct DifficultyAttrsData

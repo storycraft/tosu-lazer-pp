@@ -8,7 +8,7 @@ using osu.Game.Rulesets.Mania.Difficulty.Skills;
 using osu.Game.Rulesets.Osu.Difficulty.Skills;
 using osu.Game.Rulesets.Taiko.Difficulty.Skills;
 
-namespace tosu.pp.Data;
+namespace binding.Data;
 
 [JSExport]
 public readonly struct StrainsData

@@ -6,7 +6,7 @@ using osu.Game.Rulesets.Scoring;
 using osu.Game.Scoring;
 using osu.Game.Beatmaps;
 
-namespace tosu.pp.Data;
+namespace binding.Data;
 
 [JSExport]
 public readonly struct ScoreInfoData

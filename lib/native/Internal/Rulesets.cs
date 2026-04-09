@@ -5,7 +5,7 @@ using osu.Game.Rulesets.Mania;
 using osu.Game.Rulesets.Osu;
 using osu.Game.Rulesets.Taiko;
 
-namespace tosu.pp.Internal;
+namespace binding.Internal;
 
 internal static class Rulesets
 {

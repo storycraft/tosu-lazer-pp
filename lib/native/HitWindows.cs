@@ -5,7 +5,7 @@ using osu.Game.Rulesets.Osu.Scoring;
 using osu.Game.Rulesets.Scoring;
 using osu.Game.Rulesets.Taiko.Scoring;
 
-namespace tosu.pp.Internal;
+namespace binding.Internal;
 
 [JSExport]
 public static class HitWindows

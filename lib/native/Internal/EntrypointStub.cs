@@ -1,7 +1,7 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-namespace tosu.pp.Internal;
+namespace binding.Internal;
 
 internal static class EntrypointStub
 {

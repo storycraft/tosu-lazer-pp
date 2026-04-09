@@ -4,7 +4,7 @@ using osu.Framework.Graphics.Textures;
 using osu.Game.Beatmaps;
 using osu.Game.Skinning;
 
-namespace tosu.pp.Internal;
+namespace binding.Internal;
 
 internal sealed class DiffWorkingBeatmap : WorkingBeatmap
 {

@@ -7,7 +7,7 @@ using osu.Game.Rulesets.Mods;
 using osu.Game.Rulesets.Osu.Objects;
 using osu.Game.Rulesets.Scoring;
 
-namespace tosu.pp;
+namespace binding;
 
 /// <summary>
 /// Provides methods to calculate accuracy for different gamemodes based on hit results and mods.

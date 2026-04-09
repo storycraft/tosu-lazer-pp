@@ -1,8 +1,8 @@
 using Microsoft.JavaScript.NodeApi;
 using osu.Game.Rulesets.Difficulty;
-using tosu.pp.Data;
+using binding.Data;
 
-namespace tosu.pp;
+namespace binding;
 
 [JSExport]
 [method: JSExport(false)]
