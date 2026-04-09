@@ -21,9 +21,9 @@ public static class AccuracyCalculator
     /// The beatmap's gamemode is determined by its ruleset.
     /// From https://github.com/ppy/osu-tools/blob/master/PerformanceCalculatorGUI/RulesetHelper.cs
     /// </summary>
-    public static double Calculate(Beatmap beatmap, ScoreInfoData score)
+    public static double Calculate(PlayBeatmap beatmap, ScoreInfoData score)
     {
-        var info = score.ToPerformanceScoreInfo(beatmap.inner.BeatmapInfo, beatmap.ruleset);
+        var info = score.ToPerformanceScoreInfo(beatmap, beatmap.ruleset);
         return Calculate(
             beatmap.ruleset.RulesetInfo.OnlineID,
             beatmap.inner,

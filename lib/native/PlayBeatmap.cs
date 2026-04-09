@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -15,27 +14,42 @@ using OsuBeatmap = osu.Game.Beatmaps.Beatmap;
 
 namespace binding;
 
+/// <summary>
+/// A beatmap with a ruleset and applied mods.
+/// </summary>
 [JSExport]
-public class Beatmap
+public class PlayBeatmap
 {
     internal readonly IBeatmap inner;
     internal readonly Ruleset ruleset;
+
+    internal Mod[] Mods;
 
     /// <summary>
     /// The online ID of the current beatmap's ruleset. Also known as legacy gamemode ID.
     /// </summary>
     public int Mode => ruleset.RulesetInfo.OnlineID;
 
-    private Beatmap(IBeatmap inner, Ruleset ruleset)
+    private PlayBeatmap(IBeatmap inner, Ruleset ruleset)
     {
         this.inner = inner;
         this.ruleset = ruleset;
+        Mods = [];
     }
 
     /// <summary>
-    /// Perform beatmap conversion to another gamemode
+    /// Set beatmap mods.
     /// </summary>
-    public Beatmap? Convert(int gameMode)
+    public void ApplyMods(LazerMod[] mods)
+    {
+        Mods = [.. mods.Select(m => m.ToMod(ruleset))];
+    }
+
+    /// <summary>
+    /// Perform beatmap conversion to another gamemode.
+    /// Applied mods will not be retained to returned beatmap.
+    /// </summary>
+    public PlayBeatmap? Convert(int gameMode)
     {
         var ruleset = Rulesets.FromLegacyGameMode(gameMode);
         if (ruleset is null)
@@ -53,39 +67,31 @@ public class Beatmap
     }
 
     /// <summary>
-    /// Get beatmap difficulty with mods applied
+    /// Get the original beatmap difficulty without any mods applied.
     /// </summary>
-    public BeatmapDifficultyData GetBeatmapDifficulty(IEnumerable<string> mods)
-    {
-        return BeatmapDifficultyData.FromDifficulty(
+    /// <returns></returns>
+    public BeatmapDifficultyData GetOriginalBeatmapDifficulty() =>
+        BeatmapDifficultyData.FromDifficulty(inner.BeatmapInfo.Difficulty);
+
+    /// <summary>
+    /// Get beatmap difficulty with current mods applied
+    /// </summary>
+    public BeatmapDifficultyData GetBeatmapDifficulty() =>
+        BeatmapDifficultyData.FromDifficulty(
             ruleset.GetAdjustedDisplayDifficulty(
                 inner.BeatmapInfo,
-                mods.Select(ruleset.CreateModFromAcronym).Where(mod => mod is not null).ToArray()!
+                Mods
             )
         );
-    }
 
     /// <summary>
-    /// Create gradual difficulty calculator
+    /// Create gradual difficulty calculator with current mods applied.
     /// </summary>
-    /// <param name="mods">mods to apply to the difficulty calculation.</param>
-    public GradualDifficulty CreateGradualDifficultyCalculator(IEnumerable<string> mods)
+    public GradualDifficulty CreateGradualDifficultyCalculator()
     {
         return new GradualDifficulty(
-            ruleset.CreateDifficultyCalculator(new DiffWorkingBeatmap(inner)).CreateGradualDifficulty(
-                mods.Select(ruleset.CreateModFromAcronym).Where(mod => mod is not null)
-            )
+            ruleset.CreateDifficultyCalculator(new DiffWorkingBeatmap(inner)).CreateGradualDifficulty(Mods)
         );
-    }
-
-    /// <summary>
-    /// Calculate difficulty
-    /// </summary>
-    public DifficultyAttrs CalculateDifficulty(IEnumerable<string> mods)
-    {
-        return new(ruleset.CreateDifficultyCalculator(new DiffWorkingBeatmap(inner)).Calculate(
-            mods.Select(ruleset.CreateModFromAcronym).Where(mod => mod is not null)
-        ));
     }
 
     /// <summary>
@@ -104,7 +110,7 @@ public class Beatmap
 
         return PerformanceAttrsData.FromAttrs(
             calc.Calculate(
-                score.ToPerformanceScoreInfo(inner.BeatmapInfo, ruleset),
+                score.ToPerformanceScoreInfo(this, ruleset),
                 attrs.Inner
             )
         );
@@ -114,7 +120,7 @@ public class Beatmap
     /// Parse string osu file into Beatmap
     /// </summary>
     /// <exception cref="InvalidOperationException"></exception>
-    public static Beatmap Parse(string content)
+    public static PlayBeatmap Parse(string content)
     {
         var bytes = Encoding.UTF8.GetBytes(content);
         using var reader = new LineBufferedReader(new MemoryStream(bytes));

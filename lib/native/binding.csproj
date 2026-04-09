@@ -22,6 +22,7 @@
     <EmbeddedResource Include="ILLink.Descriptors.xml">
       <LogicalName>ILLink.Descriptors.xml</LogicalName>
     </EmbeddedResource>
+    <IlcArg Include="--substitution:$(MSBuildThisFileDirectory)ILLink.Substitutions.xml" />
   </ItemGroup>
 
   <ItemGroup>

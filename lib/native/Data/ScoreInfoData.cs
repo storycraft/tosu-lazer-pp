@@ -1,10 +1,8 @@
 using System.Collections.Generic;
 using Microsoft.JavaScript.NodeApi;
-using System.Linq;
 using osu.Game.Rulesets;
 using osu.Game.Rulesets.Scoring;
 using osu.Game.Scoring;
-using osu.Game.Beatmaps;
 
 namespace binding.Data;
 
@@ -14,7 +12,6 @@ public readonly struct ScoreInfoData
     public required long TotalScore { get; init; }
 
     public required double Accuracy { get; init; }
-    public required string[] Mods { get; init; }
 
     public required int MaxCombo { get; init; }
 
@@ -55,11 +52,11 @@ public readonly struct ScoreInfoData
         [HitResult.Miss] = Misses,
     };
 
-    internal ScoreInfo ToPerformanceScoreInfo(BeatmapInfo info, Ruleset ruleset) => new(info, ruleset.RulesetInfo)
+    internal ScoreInfo ToPerformanceScoreInfo(PlayBeatmap beatmap, Ruleset ruleset) => new(beatmap.inner.BeatmapInfo, ruleset.RulesetInfo)
     {
         TotalScore = TotalScore,
         LegacyTotalScore = TotalScore,
-        Mods = Mods.Select(ruleset.CreateModFromAcronym).Where(mod => mod is not null).ToArray()!,
+        Mods = beatmap.Mods,
         MaxCombo = MaxCombo,
         Accuracy = Accuracy,
         Statistics = CreateStatistics(),
@@ -71,7 +68,6 @@ public readonly struct ScoreInfoData
         {
             TotalScore = info.TotalScore,
             Accuracy = info.Accuracy,
-            Mods = [.. info.Mods.Select(mod => mod.Acronym)],
             MaxCombo = info.MaxCombo,
             SliderEndHits = info.Statistics.GetValueOrDefault(HitResult.SliderTailHit),
             ComboBreaks = info.Statistics.GetValueOrDefault(HitResult.ComboBreak),

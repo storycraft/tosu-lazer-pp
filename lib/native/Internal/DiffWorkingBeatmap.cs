@@ -6,14 +6,9 @@ using osu.Game.Skinning;
 
 namespace binding.Internal;
 
-internal sealed class DiffWorkingBeatmap : WorkingBeatmap
+internal sealed class DiffWorkingBeatmap(IBeatmap beatmap) : WorkingBeatmap(beatmap.BeatmapInfo, null)
 {
-    private readonly IBeatmap beatmap;
-
-    public DiffWorkingBeatmap(IBeatmap beatmap) : base(beatmap.BeatmapInfo, null)
-    {
-        this.beatmap = beatmap;
-    }
+    private readonly IBeatmap beatmap = beatmap;
 
     protected override IBeatmap GetBeatmap() => beatmap;
 
