@@ -35,15 +35,16 @@ public static class AccuracyCalculator
     internal static double Calculate(int ruleset, IBeatmap beatmap, Dictionary<HitResult, int> statistics, Mod[] mods)
         => ruleset switch
         {
-            0 => GetOsuAccuracy(beatmap, statistics),
+            0 => GetOsuAccuracy(beatmap, statistics, mods),
             1 => GetTaikoAccuracy(statistics),
             2 => GetCatchAccuracy(statistics),
             3 => GetManiaAccuracy(statistics, mods),
             _ => 0.0
         };
 
-    private static double GetOsuAccuracy(IBeatmap beatmap, Dictionary<HitResult, int> statistics)
+    private static double GetOsuAccuracy(IBeatmap beatmap, Dictionary<HitResult, int> statistics, Mod[] mods)
     {
+        var isClassic = mods.Any(m => m is ModClassic);
         int countGreat = statistics[HitResult.Great];
         int countGood = statistics[HitResult.Ok];
         int countMeh = statistics[HitResult.Meh];
@@ -52,7 +53,7 @@ public static class AccuracyCalculator
         double total = 6 * countGreat + 2 * countGood + countMeh;
         double max = 6 * (countGreat + countGood + countMeh + countMiss);
 
-        if (statistics.TryGetValue(HitResult.SliderTailHit, out int countSliderTailHit))
+        if (!isClassic && statistics.TryGetValue(HitResult.SliderTailHit, out int countSliderTailHit))
         {
             int countSliders = beatmap.HitObjects.Count(x => x is Slider);
 
@@ -60,7 +61,7 @@ public static class AccuracyCalculator
             max += 3 * countSliders;
         }
 
-        if (statistics.TryGetValue(HitResult.LargeTickMiss, out int countLargeTicksMiss))
+        if (!isClassic && statistics.TryGetValue(HitResult.LargeTickMiss, out int countLargeTicksMiss))
         {
             int countLargeTicks = beatmap.HitObjects.Sum(obj => obj.NestedHitObjects.Count(x => x is SliderTick or SliderRepeat));
             int countLargeTickHit = countLargeTicks - countLargeTicksMiss;
