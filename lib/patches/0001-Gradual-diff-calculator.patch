@@ -1,7 +1,7 @@
-From 9a8cebd02cdd9058b0639555353984aeb0074bec Mon Sep 17 00:00:00 2001
+From 3a5534a1013ec7238440826795a324e82fe92163 Mon Sep 17 00:00:00 2001
 From: storycraft <storycraft@pancake.sh>
 Date: Sat, 4 Apr 2026 14:19:10 +0900
-Subject: [PATCH 1/4] Gradual diff calculator
+Subject: [PATCH 1/5] Gradual diff calculator
 
 ---
  .../Difficulty/DifficultyCalculator.cs        |  22 ++
@@ -10,7 +10,7 @@ Subject: [PATCH 1/4] Gradual diff calculator
  create mode 100644 osu.Game/Rulesets/Difficulty/GradualDifficultyEnumerator.cs
 
 diff --git a/osu.Game/Rulesets/Difficulty/DifficultyCalculator.cs b/osu.Game/Rulesets/Difficulty/DifficultyCalculator.cs
-index 7acfbe651fe..f556c52e25a 100644
+index 7acfbe651f..f556c52e25 100644
 --- a/osu.Game/Rulesets/Difficulty/DifficultyCalculator.cs
 +++ b/osu.Game/Rulesets/Difficulty/DifficultyCalculator.cs
 @@ -91,6 +91,28 @@ public DifficultyAttributes Calculate([NotNull] IEnumerable<Mod> mods, Cancellat
@@ -44,7 +44,7 @@ index 7acfbe651fe..f556c52e25a 100644
          /// </summary>
 diff --git a/osu.Game/Rulesets/Difficulty/GradualDifficultyEnumerator.cs b/osu.Game/Rulesets/Difficulty/GradualDifficultyEnumerator.cs
 new file mode 100644
-index 00000000000..8328634ac07
+index 0000000000..8328634ac0
 --- /dev/null
 +++ b/osu.Game/Rulesets/Difficulty/GradualDifficultyEnumerator.cs
 @@ -0,0 +1,230 @@
@@ -279,23 +279,23 @@ index 00000000000..8328634ac07
 +    }
 +}
 -- 
-2.49.0.windows.1
+2.33.0.windows.2
 
 
-From a8db1627830b8a9346a38fa147bcee1e00bf18a2 Mon Sep 17 00:00:00 2001
+From 1eab247fad8bb9eba09cea70bafc0983536b191a Mon Sep 17 00:00:00 2001
 From: storycraft <storycraft@pancake.sh>
 Date: Sat, 4 Apr 2026 20:57:13 +0900
-Subject: [PATCH 2/4] Split CreateDifficultyAttributes
+Subject: [PATCH 2/5] Split CreateDifficultyAttributes
 
 ---
  .../Difficulty/GradualDifficultyEnumerator.cs      | 14 ++++++++------
  1 file changed, 8 insertions(+), 6 deletions(-)
 
 diff --git a/osu.Game/Rulesets/Difficulty/GradualDifficultyEnumerator.cs b/osu.Game/Rulesets/Difficulty/GradualDifficultyEnumerator.cs
-index 8328634ac07..f2574061f7a 100644
+index 8328634ac0..f2574061f7 100644
 --- a/osu.Game/Rulesets/Difficulty/GradualDifficultyEnumerator.cs
 +++ b/osu.Game/Rulesets/Difficulty/GradualDifficultyEnumerator.cs
-@@ -49,11 +49,11 @@ public GradualDifficultyEnumerator(
+@@ -49,11 +49,11 @@ public sealed class GradualDifficultyEnumerator
              Skills = skills;
          }
  
@@ -309,7 +309,7 @@ index 8328634ac07..f2574061f7a 100644
              progressiveBeatmap.HitObjects.Add(hitObject);
  
              while (difficultyHitObjectCursor < difficultyHitObjects.Length)
-@@ -72,10 +72,12 @@ public GradualDifficultyEnumerator(
+@@ -72,10 +72,12 @@ public sealed class GradualDifficultyEnumerator
                  }
              }
  
@@ -327,13 +327,13 @@ index 8328634ac07..f2574061f7a 100644
  
          public void Skip(int offset)
 -- 
-2.49.0.windows.1
+2.33.0.windows.2
 
 
-From 3973e194799d05bfb7091e4e258b1885d658a9f7 Mon Sep 17 00:00:00 2001
+From 6785713cf9acdc70de0386b1dbf88a188355dfc1 Mon Sep 17 00:00:00 2001
 From: storycraft <storycraft@pancake.sh>
 Date: Sat, 4 Apr 2026 22:55:51 +0900
-Subject: [PATCH 3/4] Add updateDifficultyHitObjects for handling on advance
+Subject: [PATCH 3/5] Add updateDifficultyHitObjects for handling on advance
  and skip
 
 ---
@@ -341,10 +341,10 @@ Subject: [PATCH 3/4] Add updateDifficultyHitObjects for handling on advance
  1 file changed, 29 insertions(+), 11 deletions(-)
 
 diff --git a/osu.Game/Rulesets/Difficulty/GradualDifficultyEnumerator.cs b/osu.Game/Rulesets/Difficulty/GradualDifficultyEnumerator.cs
-index f2574061f7a..3f100118e4f 100644
+index f2574061f7..3f100118e4 100644
 --- a/osu.Game/Rulesets/Difficulty/GradualDifficultyEnumerator.cs
 +++ b/osu.Game/Rulesets/Difficulty/GradualDifficultyEnumerator.cs
-@@ -49,17 +49,16 @@ public GradualDifficultyEnumerator(
+@@ -49,17 +49,16 @@ public sealed class GradualDifficultyEnumerator
              Skills = skills;
          }
  
@@ -422,23 +422,23 @@ index f2574061f7a..3f100118e4f 100644
  
          /// <summary>
 -- 
-2.49.0.windows.1
+2.33.0.windows.2
 
 
-From 0864c3a480e990fd7bd191f2b05e21b29c74752b Mon Sep 17 00:00:00 2001
+From 0cd8ffa1f7b49189c81ddf95a4a0fea7d8850bf5 Mon Sep 17 00:00:00 2001
 From: storycraft <storycraft@pancake.sh>
 Date: Sat, 4 Apr 2026 23:02:03 +0900
-Subject: [PATCH 4/4] Fix update by clamping to last hit object
+Subject: [PATCH 4/5] Fix update by clamping to last hit object
 
 ---
  osu.Game/Rulesets/Difficulty/GradualDifficultyEnumerator.cs | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/osu.Game/Rulesets/Difficulty/GradualDifficultyEnumerator.cs b/osu.Game/Rulesets/Difficulty/GradualDifficultyEnumerator.cs
-index 3f100118e4f..e01592e26d3 100644
+index 3f100118e4..e01592e26d 100644
 --- a/osu.Game/Rulesets/Difficulty/GradualDifficultyEnumerator.cs
 +++ b/osu.Game/Rulesets/Difficulty/GradualDifficultyEnumerator.cs
-@@ -51,10 +51,10 @@ public GradualDifficultyEnumerator(
+@@ -51,10 +51,10 @@ public sealed class GradualDifficultyEnumerator
  
          private void updateDifficultyHitObjects(CancellationToken cancellationToken)
          {
@@ -453,5 +453,36 @@ index 3f100118e4f..e01592e26d3 100644
              {
                  var difficultyHitObject = difficultyHitObjects[difficultyHitObjectCursor];
 -- 
-2.49.0.windows.1
+2.33.0.windows.2
+
+
+From 985716c5a2283081bdd742d8ab0e1267bb88cd95 Mon Sep 17 00:00:00 2001
+From: storycraft <storycraft@pancake.sh>
+Date: Thu, 9 Apr 2026 17:06:18 +0900
+Subject: [PATCH 5/5] Fix gradual last object offset
+
+---
+ osu.Game/Rulesets/Difficulty/GradualDifficultyEnumerator.cs | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/osu.Game/Rulesets/Difficulty/GradualDifficultyEnumerator.cs b/osu.Game/Rulesets/Difficulty/GradualDifficultyEnumerator.cs
+index e01592e26d..f7d4286de2 100644
+--- a/osu.Game/Rulesets/Difficulty/GradualDifficultyEnumerator.cs
++++ b/osu.Game/Rulesets/Difficulty/GradualDifficultyEnumerator.cs
+@@ -51,10 +51,10 @@ public sealed class GradualDifficultyEnumerator
+ 
+         private void updateDifficultyHitObjects(CancellationToken cancellationToken)
+         {
+-            var lastHitObject = beatmap.HitObjects.Count <= progressiveBeatmap.HitObjects.Count
+-                ? beatmap.HitObjects[beatmap.HitObjects.Count - 1]
+-                : beatmap.HitObjects[progressiveBeatmap.HitObjects.Count];
++            if (progressiveBeatmap.HitObjects.Count == 0)
++                return;
+ 
++            var lastHitObject = progressiveBeatmap.HitObjects[progressiveBeatmap.HitObjects.Count - 1];
+             while (difficultyHitObjectCursor < difficultyHitObjects.Length)
+             {
+                 var difficultyHitObject = difficultyHitObjects[difficultyHitObjectCursor];
+-- 
+2.33.0.windows.2
 
