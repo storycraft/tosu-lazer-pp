@@ -14,7 +14,6 @@
     <TrimMode>full</TrimMode>
     <MetricsSupport>false</MetricsSupport>
     <MetadataUpdaterSupport>false</MetadataUpdaterSupport>
-    <InvariantGlobalization>true</InvariantGlobalization>
     <XmlResolverIsNetworkingEnabledByDefault>false</XmlResolverIsNetworkingEnabledByDefault>
   </PropertyGroup>
 
