@@ -27,6 +27,7 @@ public readonly struct DifficultyAttrsData
     public int NCircles { get; init; }
     public int NSliders { get; init; }
     public int NSpinners { get; init; }
+    public double MaximumLegacyComboScore { get; init; }
     #endregion
 
     #region osu! and osu!taiko
@@ -58,6 +59,7 @@ public readonly struct DifficultyAttrsData
         AimTopWeightedSliderFactor = attrs.AimTopWeightedSliderFactor,
         AimDifficultStrainCount = attrs.AimDifficultStrainCount,
         SpeedDifficultStrainCount = attrs.SpeedDifficultStrainCount,
+        MaximumLegacyComboScore = attrs.MaximumLegacyComboScore,
 
         NCircles = attrs.HitCircleCount,
         NSliders = attrs.SliderCount,
