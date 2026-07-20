@@ -43,7 +43,7 @@ public class HitWindows(osu.Game.Rulesets.Scoring.HitWindows inner)
     /// Get the hit window for a specific hit result.
     /// The returned value is +- range milliseconds and clock rate is not applied.
     /// </summary>
-    public double HitWindowFor(OsuHitResult result)
+    public double WindowFor(OsuHitResult result)
     {
         return inner.WindowFor((HitResult)result);
     }
