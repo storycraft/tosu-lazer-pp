@@ -1,12 +1,9 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.JavaScript.NodeApi;
-using osu.Game.Rulesets.Mania.Scoring;
-using osu.Game.Rulesets.Osu.Scoring;
 using osu.Game.Rulesets.Scoring;
-using osu.Game.Rulesets.Taiko.Scoring;
 
-namespace binding.Internal;
+namespace binding;
 
 [JSExport]
 public enum OsuHitResult
@@ -31,48 +28,33 @@ public enum OsuHitResult
     LegacyComboIncrease = HitResult.LegacyComboIncrease,
 };
 
-
 [JSExport]
-public static class HitWindows
+public class HitWindows(osu.Game.Rulesets.Scoring.HitWindows inner)
 {
-    public static Dictionary<OsuHitResult, double> All(int mode, double od)
+    /// <summary>
+    /// Get all hit windows available.
+    /// </summary>
+    public IEnumerable<(OsuHitResult, double)> AllAvailableWindows()
     {
-        var windows = HitWindowsForRuleset(mode);
-        if (windows == null) return [];
-
-        windows.SetDifficulty(od);
-
-        var result = new Dictionary<OsuHitResult, double>();
-        foreach (var (hitResult, length) in windows.GetAllAvailableWindows())
-            result[(OsuHitResult)hitResult] = length;
-
-        return result;
+        return inner.GetAllAvailableWindows().Select(r => ((OsuHitResult)r.result, r.length));
     }
 
-    public static double GetGreatHitWindow(int mode, double od)
+    /// <summary>
+    /// Get the hit window for a specific hit result.
+    /// The returned value is +- range milliseconds and clock rate is not applied.
+    /// </summary>
+    public double WindowFor(OsuHitResult result)
     {
-        return GetHitWindow(mode, od, OsuHitResult.Great) ?? 0;
+        return inner.WindowFor((HitResult)result);
     }
 
-    public static double? GetHitWindow(int mode, double od, OsuHitResult hitResult)
+    /// <summary>
+    /// Get the hit result for a specific time offset.
+    /// </summary>
+    /// <param name="timeOffset">Time offset in milliseconds, without clock rate applied.</param>
+    /// <returns></returns>
+    public OsuHitResult ResultFor(double timeOffset)
     {
-        var windows = HitWindowsForRuleset(mode);
-        if (windows == null)
-        {
-            return null;
-        }
-        var result = (HitResult)hitResult;
-
-        windows.SetDifficulty(od);
-        return windows.WindowFor(result);
+        return (OsuHitResult) inner.ResultFor(timeOffset);
     }
-
-    private static osu.Game.Rulesets.Scoring.HitWindows? HitWindowsForRuleset(int mode) => mode switch
-    {
-        0 => new OsuHitWindows(),
-        1 => new TaikoHitWindows(),
-        // No hit windows for catch
-        3 => new ManiaHitWindows(),
-        _ => null,
-    };
 }

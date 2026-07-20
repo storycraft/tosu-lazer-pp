@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Linq;
 using System.Text;
 using Microsoft.JavaScript.NodeApi;
 using osu.Game.Beatmaps;
@@ -11,6 +10,9 @@ using binding.Data;
 using binding.Internal;
 using Decoder = osu.Game.Beatmaps.Formats.Decoder;
 using System.Threading;
+using osu.Game.Rulesets.Scoring;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace binding;
 
@@ -162,6 +164,17 @@ public class PlayBeatmap
         GetPlayableBeatmap(),
         score.CreateStatistics(),
         Mods
+    );
+
+    /// <summary>
+    /// Create an hit windows instance for the beatmap with mods applied.
+    /// </summary>
+    public HitWindows CreateHitWindows() => new(
+        ruleset.CreateDrawableRulesetWith(
+            GetPlayableBeatmap(),
+            Mods
+        ).FirstAvailableHitWindows
+        ?? osu.Game.Rulesets.Scoring.HitWindows.Empty
     );
 
     /// <summary>
