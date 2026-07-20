@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Linq;
 using System.Text;
 using Microsoft.JavaScript.NodeApi;
 using osu.Game.Beatmaps;
@@ -11,6 +10,9 @@ using binding.Data;
 using binding.Internal;
 using Decoder = osu.Game.Beatmaps.Formats.Decoder;
 using System.Threading;
+using osu.Game.Rulesets.Scoring;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace binding;
 
@@ -163,6 +165,34 @@ public class PlayBeatmap
         score.CreateStatistics(),
         Mods
     );
+
+    /// <summary>
+    /// Get all hit results available in the current beatmap with current mods applied.
+    /// </summary>
+    public IEnumerable<OsuHitResult> GetAllHitResults()
+    {
+        return GetHitWindows().GetAllAvailableWindows().Select(r => (OsuHitResult) r.result);
+    }
+
+    /// <summary>
+    /// Get the hit window for a specific hit result with current mods applied.
+    /// The returned value is +- range milliseconds and clock rate is not applied.
+    /// </summary>
+    public double GetHitWindowFor(OsuHitResult result)
+    {
+        return GetHitWindows().WindowFor((HitResult) result);
+    }
+
+    private HitWindows GetHitWindows()
+    {
+        var hitWindows = ruleset.CreateDrawableRulesetWith(GetPlayableBeatmap(), Mods).FirstAvailableHitWindows;
+        if (hitWindows is null)
+        {
+            return HitWindows.Empty;
+        }
+
+        return hitWindows;
+    }
 
     /// <summary>
     /// Parse string osu file into Beatmap
