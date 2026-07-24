@@ -28,6 +28,7 @@ public readonly struct DifficultyAttrsData
     public int NSliders { get; init; }
     public int NSpinners { get; init; }
     public double MaximumLegacyComboScore { get; init; }
+    public double NestedScorePerObject { get; init; }
     #endregion
 
     #region osu! and osu!taiko
@@ -45,6 +46,7 @@ public readonly struct DifficultyAttrsData
     #region osu!mania
     #endregion
 
+
     private static DifficultyAttrsData FromMod(OsuDifficultyAttributes attrs) => new()
     {
         Stars = attrs.StarRating,
@@ -60,6 +62,7 @@ public readonly struct DifficultyAttrsData
         AimDifficultStrainCount = attrs.AimDifficultStrainCount,
         SpeedDifficultStrainCount = attrs.SpeedDifficultStrainCount,
         MaximumLegacyComboScore = attrs.MaximumLegacyComboScore,
+        NestedScorePerObject = attrs.NestedScorePerObject,
 
         NCircles = attrs.HitCircleCount,
         NSliders = attrs.SliderCount,
