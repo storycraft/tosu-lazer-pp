@@ -112,7 +112,8 @@ public class PlayBeatmap
     public GradualDifficulty CreateGradualDifficulty()
     {
         return new GradualDifficulty(
-            this,
+            ruleset,
+            Mods,
             ruleset.CreateDifficultyCalculator(
                 new DiffWorkingBeatmap(GetPlayableBeatmap())
             ).CreateGradualDifficulty(Mods)
@@ -143,7 +144,7 @@ public class PlayBeatmap
 
     /// <summary>
     /// Create a score closest to given accuracy with the current beatmap.
-    /// Generated score only have hit results, accuracy.
+    /// Generated score only have hit results and accuracy.
     /// </summary>
     public ScoreInfoData CreateScore(double accuracy) => ScoreInfoData.FromScoreInfo(
         ScoreSimulator.CreateScoreInfo(
