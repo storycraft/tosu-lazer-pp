@@ -2,18 +2,22 @@ using Microsoft.JavaScript.NodeApi;
 using osu.Game.Rulesets.Difficulty;
 using binding.Data;
 using binding.Internal;
+using osu.Game.Rulesets;
+using osu.Game.Rulesets.Mods;
 
 namespace binding;
 
 [JSExport]
 public class GradualDifficulty
 {
-    private readonly PlayBeatmap beatmap;
+    private readonly Ruleset ruleset;
+    private readonly Mod[] mods;
     private readonly GradualDifficultyEnumerator inner;
 
-    internal GradualDifficulty(PlayBeatmap beatmap, GradualDifficultyEnumerator inner)
+    internal GradualDifficulty(Ruleset ruleset, Mod[] mods, GradualDifficultyEnumerator inner)
     {
-        this.beatmap = beatmap;
+        this.ruleset = ruleset;
+        this.mods = mods;
         this.inner = inner;
     }
 
@@ -56,18 +60,19 @@ public class GradualDifficulty
 
     /// <summary>
     /// Calculates the accuracy up to current sections based on hit results.
-    /// </summary>=
+    /// </summary>
     public double CalculateProgressiveAccuracy(ScoreInfoData data)
     {
-        return AccuracyCalculator.Calculate(beatmap.Mode, inner.ProgressiveBeatmap, data.CreateStatistics(), beatmap.Mods);
+        return AccuracyCalculator.Calculate(ruleset.RulesetInfo.OnlineID, inner.ProgressiveBeatmap, data.CreateStatistics(), mods);
     }
 
     /// <summary>
     /// Simulates a score with the given accuracy up to current sections.
+    /// Generated score only have hit results and accuracy.
     /// </summary>
     public ScoreInfoData CreateProgressiveScore(double accuracy)
     {
-        return ScoreInfoData.FromScoreInfo(ScoreSimulator.CreateScoreInfo(beatmap.ruleset, inner.ProgressiveBeatmap, beatmap.Mods, accuracy));
+        return ScoreInfoData.FromScoreInfo(ScoreSimulator.CreateScoreInfo(ruleset, inner.ProgressiveBeatmap, mods, accuracy));
     }
 
     /// <summary>
