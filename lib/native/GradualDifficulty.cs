@@ -60,7 +60,7 @@ public class GradualDifficulty
 
     /// <summary>
     /// Calculates the accuracy up to current sections based on hit results.
-    /// </summary>=
+    /// </summary>
     public double CalculateProgressiveAccuracy(ScoreInfoData data)
     {
         return AccuracyCalculator.Calculate(ruleset.RulesetInfo.OnlineID, inner.ProgressiveBeatmap, data.CreateStatistics(), mods);
@@ -68,6 +68,7 @@ public class GradualDifficulty
 
     /// <summary>
     /// Simulates a score with the given accuracy up to current sections.
+    /// Generated score only have hit results and accuracy.
     /// </summary>
     public ScoreInfoData CreateProgressiveScore(double accuracy)
     {
