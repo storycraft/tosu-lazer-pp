@@ -11,14 +11,19 @@ namespace binding;
 public struct LazerMod
 {
     public string Acronym { get; set; }
-    public Dictionary<string, object> Settings { get; set; }
+    public Dictionary<string, object>? Settings { get; set; }
 
-    internal Mod ToMod(Ruleset ruleset)
+    internal readonly Mod ToMod(Ruleset ruleset)
     {
-        return new APIMod
+        var apiMod = new APIMod
         {
             Acronym = Acronym,
-            Settings = Settings,
-        }.ToMod(ruleset);
+        };
+        if (Settings != null)
+        {
+            apiMod.Settings = Settings;
+        }
+
+        return apiMod.ToMod(ruleset);
     }
 }
