@@ -29,8 +29,15 @@ public enum OsuHitResult
 };
 
 [JSExport]
-public class HitWindows(osu.Game.Rulesets.Scoring.HitWindows inner)
+public class HitWindows
 {
+    private readonly osu.Game.Rulesets.Scoring.HitWindows inner;
+
+    internal HitWindows(osu.Game.Rulesets.Scoring.HitWindows inner)
+    {
+        this.inner = inner;
+    }
+
     /// <summary>
     /// Get all hit windows available.
     /// </summary>
