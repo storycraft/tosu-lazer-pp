@@ -1,5 +1,21 @@
+[![Npm][prebuilt-npm-badge]][prebuilt-npm-url]
+[![Npm][npm-badge]][npm-url]
+
+[prebuilt-npm-badge]: https://img.shields.io/npm/v/@tosuapp/lazer-calculator-prebuilt
+[prebuilt-npm-url]: https://www.npmjs.com/package/@tosuapp/lazer-calculator-prebuilt
+[npm-badge]: https://img.shields.io/npm/v/@tosuapp/lazer-calculator
+[npm-url]: https://www.npmjs.com/package/@tosuapp/lazer-calculator
+
 # Tosu lazer pp calculator
 osu!lazer Node.js napi binding with various utilities for calculating performance points and difficulty.
+
+## Versioning
+Example: 0.5.0-20260727-main.0
+
+* `0.5.0`: Library version.
+* `20260727`: Pp calculator version / release date.
+* `main`: Pp calculator branch (e.g. main, pp-dev).
+* `0`: Pre-release version.
 
 ## Features
 * Highly efficient gradual difficulty attribute calculation and beatmap subsetting.
