@@ -26,7 +26,7 @@ public class PlayBeatmap
 
     internal readonly Ruleset ruleset;
 
-    private Mod[] mods;
+    internal Mod[] Mods { get; private set; }
 
     /// <summary>
     /// The online ID of the current beatmap's ruleset. Also known as legacy gamemode ID.
@@ -37,7 +37,7 @@ public class PlayBeatmap
     {
         this.workingBeatmap = workingBeatmap;
         this.ruleset = ruleset;
-        mods = [];
+        Mods = [];
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ public class PlayBeatmap
     public void ApplyMods(LazerMod[] mods)
     {
         InvalidatePlayableBeatmap();
-        this.mods = [.. mods.Select(m => m.ToMod(ruleset))];
+        Mods = [.. mods.Select(m => m.ToMod(ruleset))];
     }
 
     private IBeatmap? cachedPlayableBeatmap;
@@ -68,7 +68,7 @@ public class PlayBeatmap
 
         return cachedPlayableBeatmap = workingBeatmap.GetPlayableBeatmap(
             ruleset.RulesetInfo,
-            mods,
+            Mods,
             CancellationToken.None
         );
     }
@@ -102,7 +102,7 @@ public class PlayBeatmap
         BeatmapDifficultyData.FromDifficulty(
             ruleset.GetAdjustedDisplayDifficulty(
                 GetPlayableBeatmap().BeatmapInfo,
-                mods
+                Mods
             )
         );
 
@@ -113,10 +113,10 @@ public class PlayBeatmap
     {
         return new GradualDifficulty(
             ruleset,
-            mods,
+            Mods,
             ruleset.CreateDifficultyCalculator(
                 new DiffWorkingBeatmap(workingBeatmap.Beatmap, GetPlayableBeatmap())
-            ).CreateGradualDifficulty(mods)
+            ).CreateGradualDifficulty(Mods)
         );
     }
 
@@ -150,7 +150,7 @@ public class PlayBeatmap
         ScoreSimulator.CreateScoreInfo(
             ruleset,
             GetPlayableBeatmap(),
-            mods,
+            Mods,
             accuracy
         )
     );
@@ -164,7 +164,7 @@ public class PlayBeatmap
         ruleset.RulesetInfo.OnlineID,
         GetPlayableBeatmap(),
         score.CreateStatistics(),
-        mods
+        Mods
     );
 
     /// <summary>
@@ -173,7 +173,7 @@ public class PlayBeatmap
     public HitWindows CreateHitWindows() => new(
         ruleset.CreateDrawableRulesetWith(
             GetPlayableBeatmap(),
-            mods
+            Mods
         ).FirstAvailableHitWindows
         ?? osu.Game.Rulesets.Scoring.HitWindows.Empty
     );
