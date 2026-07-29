@@ -33,7 +33,7 @@ public readonly struct ScoreInfoData
     public required int Mehs { get; init; }
     public required int Misses { get; init; }
 
-    internal Dictionary<HitResult, int> CreateStatistics() => new()
+    internal readonly Dictionary<HitResult, int> CreateStatistics() => new()
 
     {
         [HitResult.SliderTailHit] = SliderEndHits,
@@ -54,7 +54,7 @@ public readonly struct ScoreInfoData
         [HitResult.Miss] = Misses,
     };
 
-    internal ScoreInfo ToPerformanceScoreInfo(PlayBeatmap beatmap)
+    internal readonly ScoreInfo ToPerformanceScoreInfo(PlayBeatmap beatmap)
     {
         ScoreInfo info = new(
             beatmap.GetPlayableBeatmap().BeatmapInfo,
