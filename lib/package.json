@@ -9,6 +9,7 @@
   "repository": "github:tosuapp/lazer-calculator",
   "scripts": {
     "postinstall": "node postinstall.mjs && npm run build",
+    "test": "dotnet run --project native.Tests",
     "build": "dotnet publish native --ucr"
   },
   "devDependencies": {

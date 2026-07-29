@@ -1,5 +1,6 @@
 native/dist/
 native/bin/
 native/obj/
+native.Tests/
 vendor/
 .dev-marker

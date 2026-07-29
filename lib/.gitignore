@@ -3,4 +3,6 @@
 native/dist/
 native/bin/
 native/obj/
+native.Tests/bin/
+native.Tests/obj/
 vendor/

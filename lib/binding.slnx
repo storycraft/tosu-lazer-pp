@@ -5,7 +5,9 @@
     <Platform Name="x86" />
   </Configurations>
   <Project Path="native/binding.csproj" />
+  <Project Path="native.Tests/native.Tests.csproj" />
   <Project Path="vendor/osu.Game/osu.Game.csproj" />
+  <Project Path="vendor/osu.Game.Tests/osu.Game.Tests.csproj" />
   <Project Path="vendor/osu.Game.Rulesets.Catch/osu.Game.Rulesets.Catch.csproj" />
   <Project Path="vendor/osu.Game.Rulesets.Mania/osu.Game.Rulesets.Mania.csproj" />
   <Project Path="vendor/osu.Game.Rulesets.Osu/osu.Game.Rulesets.Osu.csproj" />
