@@ -41,4 +41,8 @@
   <ItemGroup>
     <PackageReference Include="ppy.osu.Game.Resources" Version="*" PrivateAssets="all" />
   </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="native.Tests" />
+  </ItemGroup>
 </Project>

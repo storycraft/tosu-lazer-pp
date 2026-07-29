@@ -11,6 +11,7 @@ using binding.Internal;
 using Decoder = osu.Game.Beatmaps.Formats.Decoder;
 using System.Threading;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace binding;
 
@@ -21,6 +22,8 @@ namespace binding;
 public class PlayBeatmap
 {
     private readonly FlatWorkingBeatmap workingBeatmap;
+
+    internal IBeatmap Beatmap => workingBeatmap.Beatmap;
 
     internal readonly Ruleset ruleset;
 
@@ -41,10 +44,12 @@ public class PlayBeatmap
     /// <summary>
     /// Set beatmap mods.
     /// </summary>
-    public void ApplyMods(LazerMod[] mods)
+    public void ApplyMods(LazerMod[] mods) => ApplyMods(mods.Select(m => m.ToMod(ruleset)));
+
+    internal void ApplyMods(IEnumerable<Mod> mods)
     {
+        Mods = [.. mods];
         InvalidatePlayableBeatmap();
-        Mods = [.. mods.Select(m => m.ToMod(ruleset))];
     }
 
     private IBeatmap? cachedPlayableBeatmap;
@@ -184,7 +189,12 @@ public class PlayBeatmap
     {
         var bytes = Encoding.UTF8.GetBytes(content);
         using var reader = new LineBufferedReader(new MemoryStream(bytes));
-        Beatmap beatmap = Decoder.GetDecoder<Beatmap>(reader).Decode(reader);
+        
+        return FromBeatmap(Decoder.GetDecoder<Beatmap>(reader).Decode(reader));
+    }
+
+    internal static PlayBeatmap FromBeatmap(IBeatmap beatmap)
+    {
         var rulesetId = beatmap.BeatmapInfo.Ruleset.OnlineID;
         var ruleset = Rulesets.FromLegacyGameMode(rulesetId) ?? throw new InvalidOperationException("Invalid ruleset: " + rulesetId);
 
