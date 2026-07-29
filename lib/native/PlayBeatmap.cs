@@ -11,6 +11,7 @@ using binding.Internal;
 using Decoder = osu.Game.Beatmaps.Formats.Decoder;
 using System.Threading;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace binding;
 
@@ -43,10 +44,12 @@ public class PlayBeatmap
     /// <summary>
     /// Set beatmap mods.
     /// </summary>
-    public void ApplyMods(LazerMod[] mods)
+    public void ApplyMods(LazerMod[] mods) => ApplyMods(mods.Select(m => m.ToMod(ruleset)));
+
+    internal void ApplyMods(IEnumerable<Mod> mods)
     {
+        Mods = [.. mods];
         InvalidatePlayableBeatmap();
-        Mods = [.. mods.Select(m => m.ToMod(ruleset))];
     }
 
     private IBeatmap? cachedPlayableBeatmap;

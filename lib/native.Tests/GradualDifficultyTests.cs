@@ -3,6 +3,7 @@ using binding.Internal;
 using NUnit.Framework;
 using osu.Game.Beatmaps;
 using osu.Game.Beatmaps.Formats;
+using osu.Game.Configuration;
 using osu.Game.IO;
 using osu.Game.IO.Archives;
 using osu.Game.Rulesets;
@@ -28,10 +29,8 @@ public class GradualDifficultyTests
         }
     }
 
-    private static IEnumerable<DifficultyAttributes> CalculateGradual(IBeatmap beatmap)
+    private static IEnumerable<DifficultyAttributes> CalculateGradual(PlayBeatmap playBeatmap)
     {
-        var playBeatmap = PlayBeatmap.FromBeatmap(beatmap);
-
         var gradual = playBeatmap.CreateGradualDifficulty();
         while (gradual.Advance())
         {
@@ -39,21 +38,44 @@ public class GradualDifficultyTests
         }
     }
 
-    [Test]
+    private static IEnumerable<DifficultyAttributes> CalculateTimed(PlayBeatmap playBeatmap)
+    {
+        var workingBeatmap = new DiffWorkingBeatmap(playBeatmap.Beatmap, playBeatmap.GetPlayableBeatmap());
+        return playBeatmap.ruleset
+            .CreateDifficultyCalculator(workingBeatmap)
+            .CalculateTimed(playBeatmap.Mods)
+            .Select(timed => timed.Attributes);
+    }
+
+    [Test, Parallelizable(ParallelScope.Children)]
     [TestCaseSource(nameof(TestBeatmaps))]
     public void TestWithTimed(IBeatmap beatmap)
     {
-        var ruleset = Rulesets.FromLegacyGameMode(beatmap.BeatmapInfo.Ruleset.OnlineID)!;
-
-        var timedAttrs =
-            ruleset
-            .CreateDifficultyCalculator(new FlatWorkingBeatmap(beatmap))
-            .CalculateTimed()
-            .Select(timed => timed.Attributes);
+        var playBeatmap = PlayBeatmap.FromBeatmap(beatmap);
 
         Assert.That(
-            timedAttrs,
-            Is.EqualTo(CalculateGradual(beatmap)).UsingPropertiesComparer()
+            CalculateTimed(playBeatmap),
+            Is.EqualTo(CalculateGradual(playBeatmap)).UsingPropertiesComparer(),
+            "Difficulty does not match without mods"
         );
+        
+
+        var ruleset = playBeatmap.ruleset;
+        var testMods = ruleset.GetModsFor(ModType.DifficultyIncrease)
+            .Concat(ruleset.GetModsFor(ModType.DifficultyReduction))
+            .Concat(ruleset.GetModsFor(ModType.Conversion))
+            .Concat(ruleset.GetModsFor(ModType.System));
+
+        foreach (var mod in testMods)
+        {
+            playBeatmap.ApplyMods([mod]);
+
+            Assert.That(
+                CalculateTimed(playBeatmap),
+                Is.EqualTo(CalculateGradual(playBeatmap))
+                    .UsingPropertiesComparer(config => config.Excluding("Mods")),
+                $"Difficulty does not match with mod {mod.Name} ({mod.Acronym})"
+            );
+        }
     }
 }
