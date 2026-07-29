@@ -56,7 +56,6 @@ public class GradualDifficultyTests
             Is.EqualTo(CalculateGradual(playBeatmap)).UsingPropertiesComparer(),
             "Difficulty does not match without mods"
         );
-        
 
         var ruleset = playBeatmap.ruleset;
         var testMods = ruleset.GetModsFor(ModType.DifficultyIncrease)
