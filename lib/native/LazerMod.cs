@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Microsoft.JavaScript.NodeApi;
 using osu.Game.Online.API;

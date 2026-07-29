@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.JavaScript.NodeApi;
-using Microsoft.Toolkit.HighPerformance;
 using osu.Game.Rulesets.Catch.Difficulty.Skills;
 using osu.Game.Rulesets.Difficulty;
 using osu.Game.Rulesets.Difficulty.Preprocessing;

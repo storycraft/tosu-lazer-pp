@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Microsoft.JavaScript.NodeApi;
-using osu.Game.Rulesets;
 using osu.Game.Rulesets.Scoring;
 using osu.Game.Scoring;
 

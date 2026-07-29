@@ -1,7 +1,7 @@
 using Microsoft.JavaScript.NodeApi;
 using osu.Game.Beatmaps;
 
-namespace binding;
+namespace binding.Data;
 
 [JSExport]
 public readonly struct BeatmapDifficultyData

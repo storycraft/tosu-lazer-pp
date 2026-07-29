@@ -10,9 +10,7 @@ using binding.Data;
 using binding.Internal;
 using Decoder = osu.Game.Beatmaps.Formats.Decoder;
 using System.Threading;
-using osu.Game.Rulesets.Scoring;
 using System.Linq;
-using System.Collections.Generic;
 
 namespace binding;
 
