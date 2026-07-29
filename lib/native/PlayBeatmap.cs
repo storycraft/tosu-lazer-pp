@@ -115,7 +115,7 @@ public class PlayBeatmap
             ruleset,
             Mods,
             ruleset.CreateDifficultyCalculator(
-                new DiffWorkingBeatmap(GetPlayableBeatmap())
+                new DiffWorkingBeatmap(workingBeatmap.Beatmap, GetPlayableBeatmap())
             ).CreateGradualDifficulty(Mods)
         );
     }
