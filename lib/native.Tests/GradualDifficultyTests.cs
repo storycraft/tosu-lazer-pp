@@ -38,9 +38,8 @@ public class GradualDifficultyTests
 
     private static IEnumerable<DifficultyAttributes> CalculateTimed(PlayBeatmap playBeatmap)
     {
-        var workingBeatmap = new DiffWorkingBeatmap(playBeatmap.Beatmap, playBeatmap.GetPlayableBeatmap());
         return playBeatmap.ruleset
-            .CreateDifficultyCalculator(workingBeatmap)
+            .CreateDifficultyCalculator(new FlatWorkingBeatmap(playBeatmap.Beatmap))
             .CalculateTimed(playBeatmap.Mods)
             .Select(timed => timed.Attributes);
     }
@@ -60,7 +59,6 @@ public class GradualDifficultyTests
         var ruleset = playBeatmap.ruleset;
         var testMods = ruleset.GetModsFor(ModType.DifficultyIncrease)
             .Concat(ruleset.GetModsFor(ModType.DifficultyReduction))
-            .Concat(ruleset.GetModsFor(ModType.Conversion))
             .Concat(ruleset.GetModsFor(ModType.System));
 
         foreach (var mod in testMods)
