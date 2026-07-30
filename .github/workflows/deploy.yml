@@ -35,7 +35,7 @@ jobs:
         run: pnpm install
 
       - name: Run tests
-        run: pnpm test
+        run: pnpm test --report-gh
 
       - name: Build native module
         run: pnpm run build
